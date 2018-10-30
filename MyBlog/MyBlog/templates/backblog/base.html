@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+<link rel="apple-touch-icon-precomposed" href="{% static 'backblog/images/icon/icon.png' %}">
+<link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
+
+    <title>{% block title %} {% endblock %}</title>
+
+    {% block jscss %} {% endblock %}
+    {% block commcss %} {% endblock %}
+
+</head>
+<body class="user-select">
+    {% block content %} {% endblock %}
+
+</body>
+</html>

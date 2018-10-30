@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+{% block commjs %}
+<script src="{% static 'blog/js/query.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'blog/js/comm.js' %}"></script>
+{% endblock %}
+
+{% block commcss %}
+<link href="{% static 'blog/css/base.css' %}" rel="stylesheet">
+<link href="{% static 'blog/css/index.css' %}" rel="stylesheet">
+<link href="{% static 'blog/css/m.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %} {% endblock %}
+{% block css %} {% endblock %}
