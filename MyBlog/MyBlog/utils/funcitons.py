@@ -10,12 +10,9 @@ from backblog.models import User, Token
 def is_log(foo):
     def log_required(request):
         token = request.COOKIES.get('txf')
-        user = Token.objects.filter(value=token)
+        user = Token.objects.filter(value=token).first()
         if not user:
             return HttpResponseRedirect(reverse('super:login'))
-        id = user.user_id
-        username = User.objects.filter(id=id)
-        request.user = username
         return  foo(request)
     return log_required
 

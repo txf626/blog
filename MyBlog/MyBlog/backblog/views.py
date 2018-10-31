@@ -24,10 +24,10 @@ def login(request):
             user = check_password(password,User.objects.filter(name=name).first().new_password)
             if user:
                 ids = User.objects.filter(name=name).first().id
-                request.user = name
-                Token.objects.filter(user_id=ids).update(key='txf',value=make_password(password+str(time.time())))
+                value = make_password(password+str(time.time()))
+                Token.objects.filter(user_id=ids).update(key='txf',value=value)
                 res = HttpResponseRedirect(reverse('super:index'))
-                res.set_cookie(key='txf',value=make_password(password+str(time.time())),max_age=1000)
+                res.set_cookie(key='txf',value=value,max_age=1000)
                 return res
             else:
                 return render(request,'backblog/login.html',{'errors':'密码错误'})
