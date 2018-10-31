@@ -25,7 +25,7 @@ def login(request):
             if user:
                 ids = User.objects.filter(name=name).first().id
                 value = make_password(password+str(time.time()))
-                Token.objects.filter(user_id=ids).update(key='txf',value=value)
+                Token.objects.create(user_id=ids,key='txf',value=value)
                 res = HttpResponseRedirect(reverse('super:index'))
                 res.set_cookie(key='txf',value=value,max_age=1000)
                 return res
@@ -38,3 +38,21 @@ def login(request):
 def index(request):
     if request.method == 'GET':
         return render(request,'backblog/index.html')
+
+def logout(request):
+    if request.method == 'GET':
+        token = request.COOKIES.get('txf')
+        Token.objects.filter(value=token).delete()
+        res = HttpResponseRedirect(reverse('super:login'))
+        res.delete_cookie('txf')
+        return res
+
+
+def article(request):
+    if request.method == 'GET':
+        return render(request,'backblog/article.html')
+
+
+def add_article(request):
+    if request.method == 'GET':
+        return render(request,'backblog/add_article.html')

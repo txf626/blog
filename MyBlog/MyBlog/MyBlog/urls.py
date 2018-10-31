@@ -24,7 +24,7 @@ from backblog import urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^blog/',include('blog.urls',namespace='blog')),
-    url(r'super/',include('backblog.urls',namespace='super'))
+    url(r'^super/',include('backblog.urls',namespace='super'))
 ]
 
 urlpatterns += static(MEDIA_URL,document_root=MEDIA_ROOT)
