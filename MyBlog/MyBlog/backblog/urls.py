@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^index/',views.index,name='index'),
     url(r'^logout/',views.logout,name='logout'),
     url(r'^article/',views.article,name='article'),
-    url(r'^add_article/',views.add_article,name='add_article')
+    url(r'^add_article/',views.add_article,name='add_article'),
+    url(r'^update_article/(\d+)',views.update_article,name='update_article')
 ]

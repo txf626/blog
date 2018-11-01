@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block content %}
+{{msg}}
 <section class="container-fluid">
   <header>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -87,7 +88,7 @@
     </aside>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/add" method="post" class="add-article-form">
+        <form action="{% url 'super:add_article' %}" method="post" class="add-article-form">
           <div class="col-md-9">
             <h1 class="page-header">撰写新文章</h1>
             <div class="form-group">
@@ -122,27 +123,27 @@
                   <li>
                     <label>
                       <input name="category" type="radio" value="1" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
+                      Python <em class="hidden-md"> </em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
+                      Java <em class="hidden-md"></em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="3">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
+                      C++ <em class="hidden-md"></em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
+                      PHP <em class="hidden-md"></em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
+                      JavaScript <em class="hidden-md"></em></label>
                   </li>
                 </ul>
               </div>

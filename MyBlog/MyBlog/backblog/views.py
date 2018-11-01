@@ -1,17 +1,19 @@
 import time
 
 from django.contrib.auth.hashers import make_password, check_password
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
 from backblog.form import UserForm
-from backblog.models import User, Token
+from backblog.models import User, Token, Article
 from utils.funcitons import is_log
 
 
 def login(request):
     if request.method == 'GET':
+        token = request.COOKIES.get('txf')
+        Token.objects.filter(value=token).delete()
         return render(request,'backblog/login.html')
 
     if request.method == 'POST':
@@ -50,9 +52,26 @@ def logout(request):
 
 def article(request):
     if request.method == 'GET':
-        return render(request,'backblog/article.html')
+        msg = Article.objects.all()
+        return render(request,'backblog/article.html',{'msg':msg})
 
 
 def add_article(request):
     if request.method == 'GET':
         return render(request,'backblog/add_article.html')
+    if request.method == 'POST':
+        data = request.POST
+        new_dict = {'title':data.get('title'), 'keyword': data.get('keywords'),
+                    'description': data.get('describe'),
+                    'label': data.get('tags'),'father_node_id':data.get('category'),
+                    'img':data.get('titlepic'),'content':data.get('content')}
+
+        res = Article.objects.create(**new_dict)
+        if res:
+            return HttpResponse('OK')
+        return render(request,'backblog/add_article.html',{'msg':'错误'})
+
+def update_article(request,id):
+    if request.method =='GET':
+        msg = Article.objects.filter(id=id).first()
+        return render(request,'backblog/update_article.html',{'msg':msg})
