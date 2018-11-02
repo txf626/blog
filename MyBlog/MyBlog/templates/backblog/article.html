@@ -30,7 +30,7 @@
                 <li><a title="查看您的登录记录" data-toggle="modal" data-target="#seeUserLoginlog">登录记录</a></li>
               </ul>
             </li>
-            <li><a href="login.html" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+            <li><a href="{% url 'super:logout' %}" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
             <li><a data-toggle="modal" data-target="#WeChat">帮助</a></li>
           </ul>
           <form action="" method="post" class="navbar-form navbar-right" role="search">
@@ -56,7 +56,7 @@
         <li><a data-toggle="tooltip" data-placement="top" title="网站暂无留言功能">留言</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="category.html">栏目</a></li>
+        <li><a href="{% url 'super:category' %}">栏目</a></li>
         <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">其他</a>
           <ul class="dropdown-menu" aria-labelledby="otherMenu">
             <li><a href="flink.html">友情链接</a></li>
@@ -118,7 +118,7 @@
                 <td class="hidden-sm">0</td>
                 <td>{{art.create_time}}</td>
                 <td><a href="{% url 'super:update_article' art.id %}">修改</a>
-                  <a rel="6">删除</a></td>
+                  <a href="{% url 'super:delete' art.id %}">删除</a></td>
               </tr>
 
 
@@ -296,26 +296,6 @@
 <script src="js/admin-scripts.js"></script> 
 <script>
 //是否确认删除
-$(function(){   
-	$("#main table tbody tr td a").click(function(){
-		var name = $(this);
-		var id = name.attr("rel"); //对应id  
-		if (event.srcElement.outerText == "删除") 
-		{
-			if(window.confirm("此操作不可逆，是否确认？"))
-			{
-				$.ajax({
-					type: "POST",
-					url: "/Article/delete",
-					data: "id=" + id,
-					cache: false, //不缓存此页面   
-					success: function (data) {
-						window.location.reload();
-					}
-				});
-			};
-		};
-	});   
-});
+
 </script>
 {% endblock %}

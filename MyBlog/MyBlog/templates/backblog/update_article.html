@@ -28,7 +28,7 @@
                 <li><a title="查看您的登录记录" data-toggle="modal" data-target="#seeUserLoginlog">登录记录</a></li>
               </ul>
             </li>
-            <li><a href="login.html" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+            <li><a href="{% url 'super:logout' %}" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
             <li><a data-toggle="modal" data-target="#WeChat">帮助</a></li>
           </ul>
           <form action="" method="post" class="navbar-form navbar-right" role="search">
@@ -48,13 +48,13 @@
         <li><a href="index.html">报告</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li class="active"><a href="article.html">文章</a></li>
+        <li class="active"><a href="{% url 'super:article'%}">文章</a></li>
         <li><a href="notice.html">公告</a></li>
         <li><a href="comment.html">评论</a></li>
         <li><a data-toggle="tooltip" data-placement="top" title="网站暂无留言功能">留言</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="category.html">栏目</a></li>
+        <li><a href="{% url 'super:category' %}">栏目</a></li>
         <li><a class="dropdown-toggle" id="otherMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">其他</a>
           <ul class="dropdown-menu" aria-labelledby="otherMenu">
             <li><a href="flink.html">友情链接</a></li>
@@ -85,7 +85,7 @@
     </aside>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/update" method="post" class="add-article-form">
+        <form action="{% url 'super:update_article' msg.id %}" method="post" class="add-article-form" enctype="multipart/form-data">
           <div class="col-md-9">
             <h1 class="page-header">文章修改</h1>
             <div class="form-group">
@@ -119,28 +119,10 @@
                 <ul class="category-list">
                   <li>
                     <label>
-                      <input name="category" type="radio" value="1">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="3" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                  </li>
-                  <li>
-                    <label>
-                      <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
+                      {% for s in info %}
+                      <input name="category" type="radio" value="{{s.id}}" checked>
+                      {{s.name}} <em class="hidden-md"></em></label>
+                    {% endfor %}
                   </li>
                 </ul>
               </div>
@@ -153,11 +135,12 @@
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>
-              <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="titlepic" autocomplete="off">
-              </div>
+              <!--<div class="add-article-box-content">-->
+                <!--<input type="text" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="titlepic" autocomplete="off">-->
+              <!--</div>-->
               <div class="add-article-box-footer">
-                <button class="btn btn-default" type="button" ID="upImage">选择</button>
+                <input type="file" name="img">选择
+                <!--<button class="btn btn-default" type="button" ID="upImage">选择</button>-->
               </div>
             </div>
             <div class="add-article-box">

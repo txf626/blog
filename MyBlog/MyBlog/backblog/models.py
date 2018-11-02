@@ -16,9 +16,11 @@ class Article(models.Model):
     description = models.CharField(max_length=50)
     label = models.CharField(max_length=20)
     img = models.ImageField(upload_to='article')
-    content = models.CharField(max_length=500,default=None)
+    content = models.CharField(max_length=20000,default=None)
     father_node = models.ForeignKey(Banner)
     create_time = models.DateTimeField(auto_now_add=True)
+    is_delete = models.BooleanField(default=0)
+
     class Meta:
         db_table = 'article'
 

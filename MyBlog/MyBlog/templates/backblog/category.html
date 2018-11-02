@@ -1,29 +1,18 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>栏目 - 异清轩博客管理系统</title>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-<link rel="apple-touch-icon-precomposed" href="images/icon/icon.png">
-<link rel="shortcut icon" href="images/icon/favicon.ico">
-<script src="js/jquery-2.1.4.min.js"></script>
-<!--[if gte IE 9]>
-  <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
-  <script src="js/html5shiv.min.js" type="text/javascript"></script>
-  <script src="js/respond.min.js" type="text/javascript"></script>
-  <script src="js/selectivizr-min.js" type="text/javascript"></script>
-<![endif]-->
-<!--[if lt IE 9]>
-  <script>window.location.href='upgrade-browser.html';</script>
-<![endif]-->
-</head>
+﻿{% extends 'backblog/base.html' %}
+{% load static %}
 
-<body class="user-select">
+ {% block jscss %}
+<link rel="stylesheet" type="text/css" href="{% static 'backblog/css/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'backblog/css/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'backblog/css/font-awesome.min.css' %}">
+<link rel="apple-touch-icon-precomposed" href="{% static 'backblog/images/icon/icon.png' %}">
+<link rel="shortcut icon" href="{% static 'backblog/images/icon/favicon.ico' %}">
+<script src="{% static 'backblog/js/jquery-2.1.4.min.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
 <section class="container-fluid">
   <header>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -60,7 +49,7 @@
         <li><a href="index.html">报告</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li><a href="article.html">文章</a></li>
+        <li><a href="{% url 'super:article'%}">文章</a></li>
         <li><a href="notice.html">公告</a></li>
         <li><a href="comment.html">评论</a></li>
         <li><a data-toggle="tooltip" data-placement="top" title="网站暂无留言功能">留言</a></li>
@@ -99,7 +88,7 @@
       <div class="row">
         <div class="col-md-5">
           <h1 class="page-header">添加</h1>
-          <form action="/Category/add" method="post" autocomplete="off">
+          <form action="{% url 'super:category' %}" method="post" autocomplete="off">
             <div class="form-group">
               <label for="category-name">栏目名称</label>
               <input type="text" id="category-name" name="name" class="form-control" placeholder="在此处输入栏目名称" required autocomplete="off">
@@ -112,11 +101,9 @@
               <label for="category-fname">父节点</label>
               <select id="category-fname" class="form-control" name="fid">
                 <option value="0" selected>无</option>
-                <option value="1">前端技术</option>
-                <option value="2">后端程序</option>
-                <option value="3">管理系统</option>
-                <option value="4">授人以渔</option>
-                <option value="5">程序人生</option>
+                {% for m in msg %}
+                  <option value="{{m.id}}" selected>{{m.name}}</option>
+                {% endfor %}
               </select>
               <span class="prompt-text">栏目是有层级关系的，您可以有一个“音乐”分类目录，在这个目录下可以有叫做“流行”和“古典”的子目录。</span> </div>
             <div class="form-group">
@@ -144,41 +131,16 @@
                 </tr>
               </thead>
               <tbody>
+              {% for ms in msg %}
                 <tr>
-                  <td>1</td>
-                  <td>前端技术</td>
-                  <td>web</td>
-                  <td>125</td>
-                  <td><a href="update-category.html">修改</a> <a rel="1">删除</a></td>
+                  <td>{{ms.id}}</td>
+                  <td>{{ms.name}}</td>
+                  <td>{{ms.name_alis}}</td>
+                  <td>{{ms.article_set.count}}</td>
+                  <td><a href="{% url 'super:upd_cate' ms.id %}">修改</a>
+                    <a href="{% url 'super:del_cate' ms.id %}">删除</a></td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>后端程序</td>
-                  <td>program</td>
-                  <td>185</td>
-                  <td><a href="update-category.html">修改</a> <a rel="2">删除</a></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>管理系统</td>
-                  <td>cms</td>
-                  <td>223</td>
-                  <td><a href="update-category.html">修改</a> <a rel="3">删除</a></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>授人以渔</td>
-                  <td>tutorial</td>
-                  <td>12</td>
-                  <td><a href="update-category.html">修改</a> <a rel="4">删除</a></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>程序人生</td>
-                  <td>code</td>
-                  <td>35</td>
-                  <td><a href="update-category.html">修改</a> <a rel="5">删除</a></td>
-                </tr>
+              {% endfor %}
               </tbody>
             </table>
             <span class="prompt-text"><strong>注：</strong>删除一个栏目也会删除栏目下的文章和子栏目,请谨慎删除!</span> </div>
@@ -328,29 +290,6 @@
 </div>
 <script src="js/bootstrap.min.js"></script> 
 <script src="js/admin-scripts.js"></script> 
-<script>
-//是否确认删除
-$(function(){   
-	$("#main table tbody tr td a").click(function(){
-		var name = $(this);
-		var id = name.attr("rel"); //对应id  
-		if (event.srcElement.outerText === "删除") 
-		{
-			if(window.confirm("此操作不可逆，是否确认？"))
-			{
-				$.ajax({
-					type: "POST",
-					url: "/Category/delete",
-					data: "id=" + id,
-					cache: false, //不缓存此页面   
-					success: function (data) {
-						window.location.reload();
-					}
-				});
-			};
-		};
-	});   
-});
-</script>
-</body>
-</html>
+
+{% endblock %}
+{% endblock % }

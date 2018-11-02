@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^gbook/',views.gbook,name='gbook'),
     url(r'^info/',views.info,name='info'),
     url(r'^infopic/',views.infopic,name='infopic'),
+    url(r'^watch/(\d+)',views.watch,name='watch')
 ]
