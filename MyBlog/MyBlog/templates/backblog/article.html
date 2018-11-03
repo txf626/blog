@@ -116,15 +116,10 @@
                 <td>{{art.father_node.name}}</td>
                 <td class="hidden-sm">{{art.label}}</td>
                 <td class="hidden-sm">0</td>
-                <td>{{art.create_time}}</td>
+                <td>{{art.create_time|date:'Y-m-d H:i:s'}}</td>
                 <td><a href="{% url 'super:update_article' art.id %}">修改</a>
                   <a href="{% url 'super:delete' art.id %}">删除</a></td>
               </tr>
-
-
-
-
-
 
             {% endfor %}
             </tbody>
@@ -132,19 +127,19 @@
         </div>
         <footer class="message_footer">
           <nav>
-            <div class="btn-toolbar operation" role="toolbar">
-              <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
-              <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>
-              </div>
-            </div>
             <ul class="pagination pagenav">
               <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+              <li class="active">
+                  {% if msg.has_previous %}
+                      <li><a href="{% url 'super:article' %}?page={{ msg.previous_page_number }}">上一页</a></li>
+                  {% endif %}
+            {% for page in msg.paginator.page_range %}
+              <li><a href="{% url 'super:article' %}?page={{ page }}">{{ page }}</a></li>
+           {% endfor %}
+
+                {% if msg.has_next %}
+                <li><a href="{% url 'super:article' %}?page={{ msg.next_page_number }}">下一页</a></li>
+                {% endif %}
               <li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
             </ul>
           </nav>

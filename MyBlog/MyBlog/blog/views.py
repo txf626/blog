@@ -1,16 +1,17 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-from backblog.models import Article
+from backblog.models import Article, Banner
 
 
 def index(request):
     if request.method == 'GET':
         pag_id = request.GET.get('page',1)
         information = Article.objects.all()
-        pa = Paginator(information,10)
+        pa = Paginator(information,4)
         art = pa.page(pag_id)
-        return render(request,'blog/index.html',{'information':art})
+        ban = Banner.objects.all()
+        return render(request,'blog/index.html',{'information':art,'ban':ban})
 
 def share(request):
     if request.method == 'GET':
@@ -18,7 +19,13 @@ def share(request):
 
 def list(request):
     if request.method == 'GET':
-        return render(request,'blog/list.html')
+        pag_id = request.GET.get('page', 1)
+        information = Article.objects.all()
+        pa = Paginator(information, 8)
+        art = pa.page(pag_id)
+        ban = Banner.objects.all()
+        return render(request, 'blog/list.html', {'information': art, 'ban': ban})
+
 
 def gbook(request):
     if request.method == 'GET':
@@ -30,7 +37,8 @@ def about(request):
 
 def info(request):
     if request.method == 'GET':
-        return render(request,'blog/info.html')
+        msg = Article.objects.all().first()
+        return render(request,'blog/info.html',{'msg':msg})
 
 def infopic(request):
     if request.method == 'GET':

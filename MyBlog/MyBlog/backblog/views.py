@@ -1,6 +1,7 @@
 import time
 
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -40,6 +41,7 @@ def index(request):
     if request.method == 'GET':
         return render(request,'backblog/index.html')
 
+@is_log
 def logout(request):
     if request.method == 'GET':
         token = request.COOKIES.get('txf')
@@ -51,8 +53,11 @@ def logout(request):
 @is_log
 def article(request):
     if request.method == 'GET':
+        pag_id = request.GET.get('page',1)
         msg = Article.objects.filter(is_delete=0)
-        return render(request,'backblog/article.html',{'msg':msg})
+        paginator = Paginator(msg,5)
+        art = paginator.page(pag_id)
+        return render(request,'backblog/article.html',{'msg':art})
 
 
 @is_log
@@ -72,7 +77,7 @@ def add_article(request):
             return HttpResponseRedirect(reverse('super:article'))
         return render(request,'backblog/add_article.html',{'msg':'错误'})
 
-
+@is_log
 def update_article(request,id=None):
     if request.method =='GET':
         msg = Article.objects.filter(id=id).first()
@@ -91,7 +96,7 @@ def update_article(request,id=None):
         else:
             msg = Article.objects.filter(id=id).first()
             return render(request, 'backblog/update_article.html', {'msg': msg})
-
+@is_log
 def delete(request,id):
     if request.method == 'GET':
         art = Article.objects.filter(pk=id).first()
@@ -99,7 +104,7 @@ def delete(request,id):
         art.save()
         return article(request)
 
-
+@is_log
 def category(request):
     if request.method == 'GET':
         msg = Banner.objects.all()
@@ -114,7 +119,7 @@ def category(request):
         msg = Banner.objects.all()
         return render(request, 'backblog/category.html', {'msg': msg})
 
-
+@is_log
 def del_cate(request,id):
     if request.method == 'GET':
         Banner.objects.filter(pk=id).first().article_set.all().delete()
@@ -122,7 +127,7 @@ def del_cate(request,id):
         msg = Banner.objects.all()
         return render(request, 'backblog/category.html', {'msg': msg})
 
-
+@is_log
 def upd_cate(request,id):
     if request.method == 'GET':
         msg = Banner.objects.filter(pk=id).first()
